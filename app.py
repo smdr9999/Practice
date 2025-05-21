@@ -13,7 +13,7 @@ def home():
 @app.route('/send', methods=['POST'])
 def send_email():
     data = request.get_json()
-    text = data.get("text", "")
+    text = data.get("message", "")
 
     from_email = os.environ["EMAIL_FROM"].strip()
     to_email = os.environ["EMAIL_TO"].strip()[1:]
