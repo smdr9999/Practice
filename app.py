@@ -9,7 +9,7 @@ app = Flask(__name__)
 def home():
     return "Gmail Email API is active."
 
-@app.route('/send-email', methods=['POST'])
+@app.route('/send', methods=['POST'])
 def send_email():
     data = request.get_json()
     text = data.get("text", "")
