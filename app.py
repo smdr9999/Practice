@@ -17,13 +17,14 @@ def send_email():
     msg = MIMEText(text)
     msg["Subject"] = "Typed Data"
     msg["From"] = os.environ["EMAIL_FROM"]
-    msg["To"] = os.environ["EMAIL_TO"]
+    msg["To"] = os.environ["TO_EMAIL"]
 
     try:
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
             server.login(os.environ["EMAIL_FROM"], os.environ["EMAIL_PASSWORD"])
             server.send_message(msg)
-        return jsonify({"status": "Email sent to"+msg["To"]}), 200
+            print(msg["To"])
+        return jsonify({"status": "Email sent"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
