@@ -2,6 +2,7 @@ import os
 import smtplib
 from flask import Flask, request, jsonify
 from email.mime.text import MIMEText
+from email.utils import formataddr
 
 app = Flask(__name__)
 
@@ -14,16 +15,23 @@ def send_email():
     data = request.get_json()
     text = data.get("text", "")
 
+    from_email = os.environ["EMAIL_FROM"].strip()
+    to_email = os.environ["EMAIL_TO"].strip()
+
     msg = MIMEText(text)
     msg["Subject"] = "Typed Data"
-    msg["From"] = os.environ["EMAIL_FROM"]
-    msg["To"] = os.environ["TO_EMAIL"]
+    msg["From"] = formataddr(("Sender", from_email))
+    msg["To"] = formataddr(("Recipient", to_email))
+
+    print(f"EMAIL_TO (raw): {os.environ['EMAIL_TO']}")
+    print(f"EMAIL_TO (repr): {repr(to_email)}")
+    print(f"msg['To']: {msg['To']}")
+    print(f"Full email message:\n{msg.as_string()}")
 
     try:
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-            server.login(os.environ["EMAIL_FROM"], os.environ["EMAIL_PASSWORD"])
+            server.login(from_email, os.environ["EMAIL_PASSWORD"])
             server.send_message(msg)
-            print(msg["To"])
         return jsonify({"status": "Email sent"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
