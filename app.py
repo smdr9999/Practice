@@ -16,7 +16,7 @@ def send_email():
     text = data.get("text", "")
 
     from_email = os.environ["EMAIL_FROM"].strip()
-    to_email = os.environ["EMAIL_TO"].strip()
+    to_email = os.environ["EMAIL_TO"].strip()[1:]
 
     msg = MIMEText(text)
     msg["Subject"] = "Typed Data"
