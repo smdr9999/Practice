@@ -19,6 +19,8 @@ def send_email():
     to_email = os.environ["EMAIL_TO"].strip()[1:]
 
     msg = MIMEText(text)
+    print(msg)
+    print(text)
     msg["Subject"] = "Typed Data"
     msg["From"] = formataddr(("Sender", from_email))
     msg["To"] = formataddr(("Recipient", to_email))
