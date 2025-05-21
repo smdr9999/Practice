@@ -23,7 +23,7 @@ def send_email():
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
             server.login(os.environ["EMAIL_FROM"], os.environ["EMAIL_PASSWORD"])
             server.send_message(msg)
-        return jsonify({"status": "Email sent"}), 200
+        return jsonify({"status": "Email sent to"+msg["To"]}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
